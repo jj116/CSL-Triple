@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactive Tableau Dashboard</title>
+  <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+</head>
+<body>
+  <div id="vizContainer"></div>
+
+  <script>
+    var vizUrl = "https://prod-useast-b.online.tableau.com/t/tripledashboard/views/CSL/Dashboard1";
+    var vizContainer = document.getElementById("vizContainer");
+    var options = {
+      width: "1000px",
+      height: "863px",
+      toolbarPosition: tableau.ToolbarPosition.BOTTOM
+    };
+    var viz = new tableau.Viz(vizContainer, vizUrl, options);
+
+    viz.addEventListener(tableau.TableauEventName.PARAMETER_VALUE_CHANGE, function(event) {
+      var worksheet = viz.getWorkbook().getActiveSheet();
+      worksheet.applyFilterAsync("Region", event.getParameterValue(), tableau.FilterUpdateType.REPLACE);
+    });
+  </script>
+</body>
+</html>
